@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const socialNetworkSchema = new mongoose.Schema({
+const userSchema = new mongoose.Schema({
     user: {
         username: {
             type: String,
@@ -23,7 +23,7 @@ const socialNetworkSchema = new mongoose.Schema({
     }
 });
 
-const User = mongoose.model('User', socialNetworkSchema);
+const User = mongoose.model('User', userSchema);
 
 const handleError = (err) => console.error(err);
 
