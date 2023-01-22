@@ -13,20 +13,17 @@ module.exports = {
 
     //Get one user 
     getSingleUser(req, res) {
-        User.findOne({
-            _id: req.params.thoughtId,
-            _id: req.params.friends
-        }) //I dont know whwat I'm doing here...
-            .populate({
-                path: 'thoughts', select: '-__v', //not sure what these selects are doing
-                path: 'friends', select: '-__v',
-            })
-            .then((user) =>
+        User.findOne({ _id: req.params.userId }) //I dont know whwat I'm doing here...
+            .select('-__v')
+            .then(async (user) =>
                 !user
                     ? res.status(404).json({ message: 'No user with that ID' })
-                    : res.json(user)
+                    : res.json({user})
             )
-            .catch((err) => res.status(500).json(err));
+            .catch((err) => {
+                console.log(err);
+                return res.status(500).json(err);
+            });
     },
 
     //Create new user 
