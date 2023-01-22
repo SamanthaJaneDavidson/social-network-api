@@ -1,5 +1,5 @@
 const { ObjectID } = require('bson');
-const { Schema, Model } = require('mongoose');
+const { Schema, model } = require('mongoose');
 
 //Create schema 
 const reactionSchema = Schema({
