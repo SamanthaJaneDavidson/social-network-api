@@ -1,5 +1,6 @@
 const { Schema, Model } = require('mongoose');
 
+// Create schema
 const thoughtSchema = new Schema({
     thought: {
         thoughText: {
@@ -12,20 +13,23 @@ const thoughtSchema = new Schema({
             type: String,
             required: true,
         },
-        reactions: {
-            //add array of nested documents created with reactionsSchema
-        },
+        reactions: [
+            {
+                type: Schema.Types.ObjectId,
+                ref: "Reaction",
+            },
+        ]
         },
         createdAt: {
             type: Date,
             default: Date.now,
         },
-        },
+    },
         {
             timestamps: true,
             toJSON: { getters: true, virtuals: true },
         },
-);
+    );
 
 // Virtual for reaction count 
 userSchema
@@ -36,6 +40,6 @@ userSchema
 
 
 //Initialize model 
-const Thought = model('thought', thoughtSchema);
+const Thought = model('Thought', thoughtSchema);
 
 module.exports = Thought;
