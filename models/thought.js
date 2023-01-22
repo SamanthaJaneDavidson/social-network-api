@@ -1,37 +1,41 @@
-const mongoose = require('mongoose');
+const { Schema, Model } = require('mongoose');
 
-const thoughtSchema = new mongoose.Schema({
+const thoughtSchema = new Schema({
     thought: {
         thoughText: {
             type: String,
             required: true,
-            //1-280 characters 
-        },
-        createdAt: {
-            //date - default to current time stamp, use getter method to format timestamp
+            minLength: 1,
+            maxlength: 280,
         },
         username: {
             type: String,
             required: true,
         },
-        },
         reactions: {
-          //add array of nested documents created with reactionsSchema
-        }
-});
-
-const Thought = mongoose.model('Thought', thoughtSchema);
-
-const handleError = (err) => console.error(err);
-
-Thought.create(
-    {
-        thoughText: 'blah blah blah',
-        createdAt: //date
-        username: 'Throwingicicles', //is this pulling from somewhere?? 
-        reactions: "?"
-    },
-    (err) => (err ? handleError(err) : console.log('Created new thought'))
+            //add array of nested documents created with reactionsSchema
+        },
+        },
+        createdAt: {
+            type: Date,
+            default: Date.now,
+        },
+        },
+        {
+            timestamps: true,
+            toJSON: { getters: true, virtuals: true },
+        },
 );
+
+// Virtual for reaction count 
+userSchema
+    .virtual('reactionCount')
+    .get(function () {
+        return this.reactions.length;
+    });
+
+
+//Initialize model 
+const Thought = model('thought', thoughtSchema);
 
 module.exports = Thought;

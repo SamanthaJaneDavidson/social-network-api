@@ -8,7 +8,8 @@ const reactionSchema = new mongoose.Schema({
         reactionBody: {
             type: String,
             required: true,
-            //1-280 characters 
+            minLength: 1,
+            maxlength: 280,
         },
         username: {
             type: String,

@@ -1,6 +1,7 @@
-const mongoose = require('mongoose');
+const { Schema, Model } = require('mongoose');
 
-const userSchema = new mongoose.Schema({
+// Schhema for user model 
+const userSchema = new Schema({
     user: {
         username: {
             type: String,
@@ -14,27 +15,30 @@ const userSchema = new mongoose.Schema({
             unique: true,
             //add email validation 
         },
-        thoughts: {
-            //add array of _id values referencing the Thought model
-        },
-        friends: {
-          //add array of _id values referncing the user model (self-reference)
-        }
+        thoughts: [
+            {
+                type: Schema.Types.ObjectId,
+                ref: "thought",
+            },
+        ],
+        friends: [
+            {
+                type: Schema.Types.ObjectId,
+                ref: "user",
+            }
+        ],
     }
 });
 
-const User = mongoose.model('User', userSchema);
+// Virtual for friend count 
+userSchema
+    .virtual('friendCount')
+    .get(function () {
+        return this.friends.length;
+    });
 
-const handleError = (err) => console.error(err);
 
-User.create(
-    {
-        username: 'throwingicicles',
-        email: 'sam@test.com',
-        thoughts: 'derp',
-        friends: "none"
-    },
-    (err) => (err ? handleError(err) : console.log('Created new user'))
-);
+//Initialize model 
+const User = model('User', userSchema);
 
 module.exports = User;
