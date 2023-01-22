@@ -7,7 +7,6 @@ const app = express();
 
 const connectionURI = 'mongod://localhost/socialDB';
 
-// let db;
 
 mongodb.connect(
     connectionURI,
@@ -22,10 +21,3 @@ mongodb.connect(
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-// app.use(routes);
-
-// db.once('open', () => {
-//     app.listen(PORT, () => {
-//         console.log(`Example app listening at http://localhost:${PORT}`);
-//   });
-// });
