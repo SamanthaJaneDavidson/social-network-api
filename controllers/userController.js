@@ -1,4 +1,4 @@
-const { User, Thoughts, Friends } = require('../models');
+const { User, Thoughts } = require('../models');
 
 module.exports = {
     //Get all users 
@@ -14,11 +14,15 @@ module.exports = {
     //Get one user 
     getSingleUser(req, res) {
         User.findOne({ _id: req.params.userId }) //I dont know whwat I'm doing here...
-            .select('-__v')
+            .select('-__v') //I dont know whwat I'm doing here...
             .then(async (user) =>
                 !user
                     ? res.status(404).json({ message: 'No user with that ID' })
-                    : res.json({user})
+                    : res.json({
+                        user,
+                        thoughts: await thoughts(req.aparams.userId), //???
+                        friends: await friends(req.params.userId)
+                    })
             )
             .catch((err) => {
                 console.log(err);
