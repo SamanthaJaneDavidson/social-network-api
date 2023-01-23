@@ -13,7 +13,7 @@ const userSchema = new Schema({
             type: String,
             required: true,
             unique: true,
-            //add email validation 
+            //add email validation - use match regex
         },
         thoughts: [
             {
@@ -24,7 +24,7 @@ const userSchema = new Schema({
         friends: [
             {
                 type: Schema.Types.ObjectId,
-                ref: "User",
+                ref: "User", 
             }
         ],
     }
