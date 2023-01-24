@@ -65,4 +65,9 @@ module.exports = {
     //         });
     // },
 
+
+//post to add new friend to user's friends list
+
+//delete to remove a friend from a user's friends list 
+
 };

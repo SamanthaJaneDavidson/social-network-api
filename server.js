@@ -5,7 +5,7 @@ const mongodb = require('mongodb').MongoClient;
 const PORT = 3001;
 const app = express();
 
-const connectionURI = 'mongod://localhost/socialDB';
+const connectionURI = 'mongodb://localhost/socialDB';
 
 
 mongodb.connect(
