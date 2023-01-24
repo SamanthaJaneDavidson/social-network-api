@@ -2,33 +2,38 @@ const { Schema, model } = require('mongoose');
 
 // Schema for user model 
 const userSchema = new Schema({
-    user: {
-        username: {
-            type: String,
-            required: true,
-            unique: true,
-            trim: true
+    username: {
+        type: String,
+        required: true,
+        unique: true,
+        trim: true
+    },
+    email: {
+        type: String,
+        required: true,
+        unique: true,
+        match: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/
+    },
+    thoughts: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: "Thought",
         },
-        email: {
-            type: String,
-            required: true,
-            unique: true,
-            match: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/
+    ],
+    friends: [ 
+        {
+            type: Schema.Types.ObjectId,
+            ref: "User",
+        }
+    ],
+},
+    {
+        toJSON: {
+            virtuals: true,
         },
-        thoughts: [ //I feel like this isnt set up right...
-            {
-                type: Schema.Types.ObjectId,
-                ref: "Thought",
-            },
-        ],
-        friends: [ //I feel like this isnt set up right...
-            {
-                type: Schema.Types.ObjectId,
-                ref: "User", 
-            }
-        ],
+        id: false,
     }
-});
+);
 
 // Virtual for friend count 
 userSchema

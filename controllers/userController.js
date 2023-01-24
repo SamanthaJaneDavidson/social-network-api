@@ -1,8 +1,10 @@
-const { User, Thoughts } = require('../models');
+const { User, Thought } = require('../models');
 
-module.exports = {
-    //Get all users 
+//Get all users 
+const userController = {
+
     getUsers(req, res) {
+        console.log("something")
         User.find()
             .then((user) => res.json(user))
             .catch((err) => {
@@ -13,8 +15,8 @@ module.exports = {
 
     //Get one user 
     getSingleUser(req, res) {
-        User.findOne({ _id: req.params.userId }) //I dont know whwat I'm doing here...
-            .select('-__v') //I dont know whwat I'm doing here...
+        User.findOne({ _id: req.params.userId }) //I dont know what I'm doing here...
+            .select('-__v') //I dont know what I'm doing here...
             .then(async (user) =>
                 !user
                     ? res.status(404).json({ message: 'No user with that ID' })
@@ -57,7 +59,7 @@ module.exports = {
             .then((user) =>
                 !user
                     ? res.user(404).json({ message: 'No user with that ID' })
-                    : Thoughts.deleteMany({_id: { $in: user.thoughts}})
+                    : Thoughts.deleteMany({ _id: { $in: user.thoughts } })
             )
             .then(() => res.json({ message: 'User deleted!' }))
             .catch((err) => {
@@ -66,9 +68,36 @@ module.exports = {
             });
     },
 
+    //post to add new friend to user's friends list
+    addFriend(req, res) {
+        User.findOneAndUpdate({ _id: req.params.userId }, { $addToSet: { friends: req.params.friendId } }, { new: true })
+          .then((user) => {
+            if (!user) {
+              return res.status(404).json({ message: 'No user with this id!' });
+            }
+            res.json(user);
+          })
+          .catch((err) => {
+            console.log(err);
+            res.status(500).json(err);
+          });
+      },
 
-//post to add new friend to user's friends list
+    //delete to remove a friend from a user's friends list 
+    deleteFriend(req, res) {
+        User.findOneAndUpdate({ _id: req.params.userId }, { $pull: { friends: req.params.friendId } }, { new: true })
+          .then((user) => {
+            if (!user) {
+              return res.status(404).json({ message: 'No user with this id!' });
+            }
+            res.json(user);
+          })
+          .catch((err) => {
+            console.log(err);
+            res.status(500).json(err);
+          });
+      }
+}
 
-//delete to remove a friend from a user's friends list 
 
-};
+module.exports = userController; 

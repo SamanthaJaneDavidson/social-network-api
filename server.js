@@ -5,20 +5,19 @@ const mongodb = require('mongodb').MongoClient;
 const PORT = 3001;
 const app = express();
 
-const connectionURI = 'mongodb://localhost/socialDB';
+const connectionURI = 'mongodb://localhost/social_DB';
 
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+app.use(routes);
 
 mongodb.connect(
     connectionURI,
     { useNewUrlParser: true, useUnifiedTopology: true },
     (err, client) => {
       app.listen(PORT, () => {
-        console.log(`Example app listening at http://localhost:${PORT}`);
+        console.log(`App listening at http://localhost:${PORT}`);
       });
     }
   );
 
-
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
-app.use(routes);
