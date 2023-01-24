@@ -52,18 +52,19 @@ module.exports = {
     },
 
     //Delete a user 
-    // deleteUser(req, res) {
-    //     User.findOneAndRemove({ _id: req.params.userId })
-    //         .then((user) =>
-    //             !user
-    //                 ? res.user(404).json({ message: 'No user with that ID' })
-    //         ) //whats my syntax error here? 
-    //         .then(() => res.json({ message: 'User deleted!' }))
-    //         .catch((err) => {
-    //             console.log(err);
-    //             res.status(500).json(err);
-    //         });
-    // },
+    deleteUser(req, res) {
+        User.findOneAndRemove({ _id: req.params.userId })
+            .then((user) =>
+                !user
+                    ? res.user(404).json({ message: 'No user with that ID' })
+                    : Thoughts.deleteMany({_id: { $in: user.thoughts}})
+            )
+            .then(() => res.json({ message: 'User deleted!' }))
+            .catch((err) => {
+                console.log(err);
+                res.status(500).json(err);
+            });
+    },
 
 
 //post to add new friend to user's friends list
