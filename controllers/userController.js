@@ -1,12 +1,12 @@
-const { User, Thought } = require('../models');
+const { User } = require('../models');
 
 //Get all users 
-const userController = {
+module.exports = {
 
     getUsers(req, res) {
         console.log("something")
         User.find()
-            .then((user) => res.json(user))
+            .then((user) => res.json({name: "sam"}))
             .catch((err) => {
                 console.error({ message: err });
                 return res.status(500).json(err);
@@ -15,14 +15,14 @@ const userController = {
 
     //Get one user 
     getSingleUser(req, res) {
-        User.findOne({ _id: req.params.userId }) //I dont know what I'm doing here...
-            .select('-__v') //I dont know what I'm doing here...
+        User.findOne({ _id: req.params.userId })
+            .select('-__v')
             .then(async (user) =>
                 !user
                     ? res.status(404).json({ message: 'No user with that ID' })
                     : res.json({
                         user,
-                        thoughts: await thoughts(req.aparams.userId), //???
+                        thoughts: await thoughts(req.aparams.userId),
                         friends: await friends(req.params.userId)
                     })
             )
@@ -68,36 +68,36 @@ const userController = {
             });
     },
 
-    //post to add new friend to user's friends list
+    //Add new friend to user's friends list
     addFriend(req, res) {
         User.findOneAndUpdate({ _id: req.params.userId }, { $addToSet: { friends: req.params.friendId } }, { new: true })
-          .then((user) => {
-            if (!user) {
-              return res.status(404).json({ message: 'No user with this id!' });
-            }
-            res.json(user);
-          })
-          .catch((err) => {
-            console.log(err);
-            res.status(500).json(err);
-          });
-      },
+            .then((user) => {
+                if (!user) {
+                    return res.status(404).json({ message: 'No user with this id!' });
+                }
+                res.json(user);
+            })
+            .catch((err) => {
+                console.log(err);
+                res.status(500).json(err);
+            });
+    },
 
-    //delete to remove a friend from a user's friends list 
+    //Delete friend from a user's friends list 
     deleteFriend(req, res) {
         User.findOneAndUpdate({ _id: req.params.userId }, { $pull: { friends: req.params.friendId } }, { new: true })
-          .then((user) => {
-            if (!user) {
-              return res.status(404).json({ message: 'No user with this id!' });
-            }
-            res.json(user);
-          })
-          .catch((err) => {
-            console.log(err);
-            res.status(500).json(err);
-          });
-      }
+            .then((user) => {
+                if (!user) {
+                    return res.status(404).json({ message: 'No user with this id!' });
+                }
+                res.json(user);
+            })
+            .catch((err) => {
+                console.log(err);
+                res.status(500).json(err);
+            });
+    }
 }
 
 
-module.exports = userController; 
+// module.exports = userController; 
