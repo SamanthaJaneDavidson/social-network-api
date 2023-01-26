@@ -6,7 +6,7 @@ module.exports = {
     getUsers(req, res) {
         console.log("something")
         User.find()
-            .then((user) => res.json({name: "sam"}))
+            .then((user) => res.json(user))
             .catch((err) => {
                 console.error({ message: err });
                 return res.status(500).json(err);
@@ -20,11 +20,7 @@ module.exports = {
             .then(async (user) =>
                 !user
                     ? res.status(404).json({ message: 'No user with that ID' })
-                    : res.json({
-                        user,
-                        thoughts: await thoughts(req.aparams.userId),
-                        friends: await friends(req.params.userId)
-                    })
+                    : res.json({user})
             )
             .catch((err) => {
                 console.log(err);
