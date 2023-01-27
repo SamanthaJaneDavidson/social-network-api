@@ -3,7 +3,6 @@ const { Schema, model } = require('mongoose');
 
 //Create schema 
 const reactionSchema = Schema({
-    reaction: {
         reactionId: {
             type: ObjectID,
             default: new ObjectID,
@@ -18,7 +17,6 @@ const reactionSchema = Schema({
             type: String,
             required: true,
         },
-        },
         createdAt: {
             type: Date,
             default: Date.now,
@@ -27,7 +25,7 @@ const reactionSchema = Schema({
         {
             timestamps: true,
             toJSON: { getters: true, virtuals: true },
-        },
+        }
     );
 
 
